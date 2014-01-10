@@ -3,7 +3,7 @@ pom.xml.asc
 *jar
 /lib/
 /classes/
-/targets/
+/target/
 *.jar
 *.class
 /.lein-*
