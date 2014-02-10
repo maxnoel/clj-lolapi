@@ -53,8 +53,7 @@
   [endpoint-fn region path params]
   (let [url (endpoint-fn region path)
         query-params (assoc params "api_key" api-key)
-        ;; TODO Change to :as :json-strict once clj-http supports it.
-        response (http/get url {:as :json
+        response (http/get url {:as :json-strict
                                 :query-params query-params})]
     (get response :body)))
 

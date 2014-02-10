@@ -68,6 +68,5 @@
 (defn teams
   "Retrieve the teams the target summoner is part of."
   [region summoner-id]
-  ;; clj-http (Cheshire) deserializes that as a list instead of a vector.
-  ;; TODO Remove once :as :json-strict is supported.
-  (vec (query/live region ["team" "by-summoner" summoner-id])))
+  ;; The API returns a JSON array there.
+  (query/live region ["team" "by-summoner" summoner-id]))
