@@ -25,7 +25,8 @@
    "team" "v2.4"
    "lol-static-data" "v1.2"
    "lol-status" "v1.0"
-   "match" "v2.2"})
+   "match" "v2.2"
+   "matchhistory" "v2.2"})
 
 (defn live-method-version
   [method]
