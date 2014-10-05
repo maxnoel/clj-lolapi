@@ -3,5 +3,5 @@
 
 ;; All methods are not supported on all regions.
 ;; TODO Warn/error when attempting to access an unsupported method?
-(def regions #{"na" "euw" "eune" "br" "tr"})
+(def regions #{"br" "eune" "euw" "kr" "lan" "las" "na" "oce" "ru" "tr"})
 
