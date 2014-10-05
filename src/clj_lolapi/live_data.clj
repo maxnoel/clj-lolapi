@@ -71,5 +71,4 @@
 (defn teams
   "Retrieve the teams the target summoner is part of."
   [region summoner-id]
-  ;; The API returns a JSON array there.
   (query/live region ["team" "by-summoner" summoner-id]))
