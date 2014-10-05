@@ -52,13 +52,15 @@
 
 (defn summoner-masteries
   "Retrieve the mastery pages for the target summoner."
-  [region summoner-id]
-  (:pages (query/live region ["summoner" summoner-id "masteries"])))
+  [region & summoner-ids]
+  (let [joined-ids (clojure.string/join "," summoner-ids)]
+    (query/live region ["summoner" joined-ids "masteries"])))
 
 (defn summoner-runes
   "Retrieve the rune pages for the target summoner."
-  [region summoner-id]
-  (:pages (query/live region ["summoner" summoner-id "runes"])))
+  [region & summoner-ids]
+  (let [joined-ids (clojure.string/join "," summoner-ids)]
+    (query/live region ["summoner" joined-ids "runes"])))
 
 (defn summoner-names
   "Retrieve the names used by the target summoners (yes, summoner-ids is a list)."
