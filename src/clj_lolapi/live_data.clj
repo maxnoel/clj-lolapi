@@ -46,8 +46,9 @@
 
 (defn summoner-by-name
   "Retrieve the target summoner (by name)."
-  [region summoner-name]
-  (query/live region ["summoner" "by-name" summoner-name]))
+  [region & summoner-names]
+  (let [joined-names (clojure.string/join "," summoner-names)]
+    (query/live region ["summoner" "by-name" joined-names])))
 
 (defn summoner-masteries
   "Retrieve the mastery pages for the target summoner."
