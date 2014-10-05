@@ -64,9 +64,9 @@
 
 (defn summoner-names
   "Retrieve the names used by the target summoners (yes, summoner-ids is a list)."
-  [region summoner-ids]
+  [region & summoner-ids]
   (let [joined-ids (clojure.string/join "," summoner-ids)]
-    (:summoners (query/live region ["summoner" joined-ids "name"]))))
+    (query/live region ["summoner" joined-ids "name"])))
 
 (defn teams
   "Retrieve the teams the target summoner is part of."
