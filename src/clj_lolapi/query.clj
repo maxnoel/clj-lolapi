@@ -8,7 +8,7 @@
 
 ;; TODO Add PBE/prod servers
 ;; (function? env. variables?)
-(def server "http://prod.api.pvp.net")
+(def server "http://global.api.pvp.net")
 
 (def live-root (str server "/api/lol"))
 
@@ -17,12 +17,16 @@
 
 ;; Only support the latest version (at the time of this writing) of each method.
 (def live-method-versions
-  {"champion" "v1.1"
-   "game" "v1.2"
-   "league" "v2.2"
-   "stats" "v1.2"
-   "summoner" "v1.2"
-   "team" "v2.2"})
+  {"champion" "v1.2"
+   "game" "v1.3"
+   "league" "v2.5"
+   "stats" "v1.3"
+   "summoner" "v1.4"
+   "team" "v2.4"
+   "lol-static-data" "v1.2"
+   "lol-status" "v1.0"
+   "match" "v2.2"
+   "matchhistory" "v2.2"})
 
 (defn live-method-version
   [method]
@@ -30,9 +34,7 @@
   (get live-method-versions method "UNKNOWN"))
 
 (defn static-method-version
-  [method]
-  ;; Placeholder function: so far all static methods use v1.
-  "v1")
+  [method] "v1.2")
 
 (defn- endpoint
   [version-getter root region path]
