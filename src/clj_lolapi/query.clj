@@ -8,7 +8,7 @@
 
 ;; TODO Add PBE/prod servers
 ;; (function? env. variables?)
-(def server "http://global.api.pvp.net")
+(def server "https://global.api.pvp.net")
 
 (def live-root (str server "/api/lol"))
 
