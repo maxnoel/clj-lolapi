@@ -8,12 +8,13 @@
 
 ;; TODO Add PBE/prod servers
 ;; (function? env. variables?)
-(def server "http://global.api.pvp.net")
+;; "global" ?
+(defn server [region] (str "https://" region ".api.pvp.net"))
 
-(def live-root (str server "/api/lol"))
+(defn live-root [region] (str (server region) "/api/lol"))
 
 ;; All static data calls use sub-paths of /static-data
-(def static-root (str server "/api/lol/static-data"))
+(defn static-root [region] (str (server region) "/api/lol/static-data"))
 
 ;; Only support the latest version (at the time of this writing) of each method.
 (def live-method-versions
@@ -44,11 +45,11 @@
 
 (defn live-endpoint
   [region path]
-  (endpoint live-method-version live-root region path))
+  (endpoint live-method-version (live-root region) region path))
 
 (defn static-endpoint
   [region path]
-  (endpoint static-method-version static-root region path))
+  (endpoint static-method-version (static-root region) region path))
 
 (defn- query
   "Make a HTTP request to the Riot API."
