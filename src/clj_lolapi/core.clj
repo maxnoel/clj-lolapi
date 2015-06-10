@@ -50,8 +50,9 @@
 
 (defn match
   "Retrieve match history for a summoner"
-  [region match-id]
-  (query/live region ["match" match-id]))
+  ([region match-id] (match region match-id {}))
+  ([region match-id {:keys [timeline] :or {timeline false}}]
+  (query/live region ["match" match-id] {"includeTimeline" timeline})))
 
 (defn summoner
   "Retrieve the target summoner (by ID)."
