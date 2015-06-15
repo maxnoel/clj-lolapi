@@ -6,12 +6,12 @@
 ;; Define this in the RIOT_API_KEY environment variable
 (def api-key (env/env :riot-api-key))
 
-;; TODO Add PBE/prod servers
-;; (function? env. variables?)
-;; "global" ?
+;;
 (defn server [region] (str "https://" region ".api.pvp.net"))
 
 (defn live-root [region] (str (server region) "/api/lol"))
+
+(defn observer-root [region] (str (server region) "/observer-mode/rest"))
 
 ;; All static data calls use sub-paths of /static-data
 (defn static-root [region] (str (server region) "/api/lol/static-data"))
@@ -29,6 +29,10 @@
    "match" "v2.2"
    "matchhistory" "v2.2"})
 
+(def observer-methods
+  {"current-game" "consumer/getSpectatorGameInfo"
+   "featured-games" "featured"})
+
 (defn live-method-version
   [method]
   ;; TODO Warn/error on unknown method?
@@ -37,19 +41,30 @@
 (defn static-method-version
   [method] "v1.2")
 
-(defn- endpoint
+(defn- endpoint-fmt
   [version-getter root region path]
   (let [method (first path)
         version (version-getter method)]
     (string/join "/" (into [root region version] path))))
 
+(defn- observer-endpoint-fmt
+  [method-getter root path]
+  (let [key (first path)
+        method (method-getter key)
+        path-parts (if (coll? path) (rest path) [])]
+    (string/join "/" (into [root method] path-parts))))
+
 (defn live-endpoint
   [region path]
-  (endpoint live-method-version (live-root region) region path))
+  (endpoint-fmt live-method-version (live-root region) region path))
 
 (defn static-endpoint
   [region path]
-  (endpoint static-method-version (static-root region) region path))
+  (endpoint-fmt static-method-version (static-root region) region path))
+
+(defn observer-endpoint
+  [region path]
+  (observer-endpoint-fmt observer-methods (observer-root region) path))
 
 (defn- query
   "Make a HTTP request to the Riot API."
@@ -69,3 +84,8 @@
   ([region path] (static region path {}))
   ([region path params]
     (query static-endpoint region path params)))
+
+(defn observer
+  ([region path] (observer region path {}))
+  ([region path params]
+    (query observer-endpoint region path params)))
