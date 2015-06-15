@@ -26,11 +26,13 @@
   (if-region-valid regions region
     (:champions (query/live region ["champion"]))))
 
+
 (defn games
   "Retrieve recent games for the target summoner."
   [region summoner-id]
   (if-region-valid regions region
     (:games (query/live region ["game" "by-summoner" summoner-id "recent"]))))
+
 
 (defn leagues
   "Retrieve league data for the target summoner.
@@ -46,6 +48,7 @@
 
   TODO Implement season filtering."
   [region summoner-id]
+
   (if-region-valid regions region
     (:playerStatSummaries (query/live region ["stats" "by-summoner" summoner-id "summary"]))))
 
@@ -65,9 +68,11 @@
 
 (defn match
   "Retrieve match history for a summoner"
-  [region match-id]
-  (if-region-valid regions region
-    (query/live region ["match" match-id])))
+  ([region match-id] (match region match-id {}))
+  ([region match-id {:keys [timeline] :or {timeline false}}]
+   (if-region-valid regions region
+    (query/live region ["match" match-id] {"includeTimeline" timeline}))))
+
 
 (defn summoner
   "Retrieve the target summoner (by ID)."
