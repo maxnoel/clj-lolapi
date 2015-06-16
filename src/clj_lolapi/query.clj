@@ -14,7 +14,7 @@
 (defn observer-root [region] (str (server region) "/observer-mode/rest"))
 
 ;; All static data calls use sub-paths of /static-data
-(defn static-root [region] (str (server region) "/api/lol/static-data"))
+(defn static-root [] (str (server "global") "/api/lol/static-data"))
 
 ;; Only support the latest version (at the time of this writing) of each method.
 (def live-method-versions
@@ -60,7 +60,7 @@
 
 (defn static-endpoint
   [region path]
-  (endpoint-fmt static-method-version (static-root region) region path))
+  (endpoint-fmt static-method-version (static-root) region path))
 
 (defn observer-endpoint
   [region path]
