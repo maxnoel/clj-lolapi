@@ -1,6 +1,12 @@
 (ns clj-lolapi.esports
   (:require [clj-lolapi.query :as query]))
 
+;; http://na.lolesports.com/api/swagger
+
+(def publishing-options [:published/only-yes
+                         :published/only-no
+                         :published/both])
+
 (defn player
   "Returns basic information about a player including name, bio, and profile url on lolesports"
   [player-id]
