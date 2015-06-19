@@ -140,9 +140,12 @@
 (defn programming
   "Returns all programming blocks"
   ([] (programming {}))
-  ([{:keys [id tournament-id]}]
-   (let [path (remove nil? ["programming" id])]
-     (query/esports path (clean-hash-map
-                           {"parameters[method]" "all"
-                            "parameters[winner]" 1 ;; we always send winner 1 because of some weird conflicts with tournament id
-                            "parameters[tournament]" tournament-id})))))
+  ([{:keys [id winner expand tournament-id]}]
+   (if (nil? id)
+     (query/esports ["programming"] (clean-hash-map
+                                     {"parameters[method]" "all"
+                                      "parameters[expand_matches]" (if expand 1 0)
+                                      "parameters[winner]" 1 ;; we always send winner 1 because of some weird conflicts with tournament id
+                                      "parameters[tournament]" tournament-id}))
+     (query/esports ["programming" id] (clean-hash-map
+                                        {"expand_matches" (if expand 1 0)})))))
