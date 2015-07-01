@@ -6,14 +6,15 @@
 ;; Define this in the RIOT_API_KEY environment variable
 (def api-key (env/env :riot-api-key))
 
-;;
+;; root paths
 (defn server [region] (str "https://" region ".api.pvp.net"))
 
 (defn live-root [region] (str (server region) "/api/lol"))
 
 (defn observer-root [region] (str (server region) "/observer-mode/rest"))
 
-;; All static data calls use sub-paths of /static-data
+(def esports-root "http://na.lolesports.com:80/api")
+
 (defn static-root [] (str (server "global") "/api/lol/static-data"))
 
 ;; Only support the latest version (at the time of this writing) of each method.
@@ -54,6 +55,10 @@
         path-parts (if (coll? path) (rest path) [])]
     (string/join "/" (into [root method] path-parts))))
 
+(defn- esports-endpoint-fmt
+  [root path]
+    (str (string/join "/" (into [root] path)) ".json"))
+
 (defn live-endpoint
   [region path]
   (endpoint-fmt live-method-version (live-root region) region path))
@@ -65,6 +70,10 @@
 (defn observer-endpoint
   [region path]
   (observer-endpoint-fmt observer-methods (observer-root region) path))
+
+(defn esports-endpoint
+  [_ path]
+  (esports-endpoint-fmt esports-root path))
 
 (defn- query
   "Make a HTTP request to the Riot API."
@@ -89,3 +98,8 @@
   ([region path] (observer region path {}))
   ([region path params]
     (query observer-endpoint region path params)))
+
+(defn esports
+  ([path] (esports path {}))
+  ([path params]
+    (query esports-endpoint nil path params)))
