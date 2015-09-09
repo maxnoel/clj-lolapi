@@ -64,7 +64,12 @@
   "Retrieve match history for a summoner"
   [region summoner-id]
   (if-region-valid regions region
-    (query/live region ["matchhistory" summoner-id])))
+                   (query/live region ["matchhistory" summoner-id])))
+
+(defn match-list
+  [region summoner-id]
+  (if-region-valid regions region
+                   (query/live region ["matchlist" "by-summoner" summoner-id])))
 
 (defn match
   "Retrieve match history for a summoner"
