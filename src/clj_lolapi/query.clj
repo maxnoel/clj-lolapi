@@ -28,7 +28,8 @@
    "lol-static-data" "v1.2"
    "lol-status" "v1.0"
    "match" "v2.2"
-   "matchhistory" "v2.2"})
+   "matchhistory" "v2.2"
+   "matchlist" "v2.2"})
 
 (def observer-methods
   {"current-game" "consumer/getSpectatorGameInfo"
