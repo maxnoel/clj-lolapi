@@ -13,7 +13,7 @@
 
 (defn observer-root [region] (str (server region) "/observer-mode/rest"))
 
-(def esports-root "http://na.lolesports.com:80/api")
+(def esports-root "http://api.lolesports.com/api/v1")
 
 (defn static-root [] (str (server "global") "/api/lol/static-data"))
 
@@ -58,7 +58,7 @@
 
 (defn- esports-endpoint-fmt
   [root path]
-    (str (string/join "/" (into [root] path)) ".json"))
+    (str (string/join "/" (into [root] path))))
 
 (defn live-endpoint
   [region path]
@@ -78,12 +78,14 @@
 
 (defn- query
   "Make a HTTP request to the Riot API."
-  [endpoint-fn region path params]
-  (let [url (endpoint-fn region path)
-        query-params (assoc params "api_key" api-key)
-        response (http/get url {:as :json-strict
-                                :query-params query-params})]
-    (get response :body)))
+  ([endpoint-fn region path params]
+   (query endpoint-fn region path params false))
+  ([endpoint-fn region path params anon?]
+   (let [url (endpoint-fn region path)
+         query-params (if anon? params (assoc params "api_key" api-key))
+         response (http/get url {:as :json-strict
+                                 :query-params query-params})]
+     (get response :body))))
 
 (defn live
   ([region path] (live region path {}))
@@ -103,4 +105,4 @@
 (defn esports
   ([path] (esports path {}))
   ([path params]
-    (query esports-endpoint nil path params)))
+    (query esports-endpoint nil path params true)))
